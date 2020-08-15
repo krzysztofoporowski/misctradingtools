@@ -48,7 +48,7 @@ def plot_ichimoku(data, stock_name, buy_data, sell_data):
                             linewidth=1, label='close')
     axis1 = data.tenkan_sen.plot(figsize=(15, 10), color='pink',
                                  linewidth=1, label='tenkan sen')
-    axis1 = data.senkou_span_a.plot(figsize=(15, 10), color='pink',
+    axis1 = data.senkou_span_a.plot(figsize=(15, 10), color='lightgreen',
                                     linewidth=1)
     axis1 = data.senkou_span_b.plot(figsize=(15, 10), color='black',
                                     linewidth=1)
