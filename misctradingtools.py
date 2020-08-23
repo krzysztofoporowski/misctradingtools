@@ -30,6 +30,22 @@ def get_prev_workday_datestring():
         date_string = str(date.today() - timedelta(days=1))
     return date_string
 
+def get_date_from_past(past=7):
+    '''
+    Function returns date older than today minus past
+    
+    Parameters:
+    -----------
+    past - intiger, number of days used to calculate past date
+    
+    Returns:
+    --------
+    date in the Pandas DateTime format
+    '''
+    today = date.today()
+    past_date = today - timedelta(days=past)
+    return past_date
+
 def plot_ichimoku(data, stock_name, buy_data, sell_data):
     '''
     Function to plot stocks with Ichimoku settings
