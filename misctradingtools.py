@@ -9,6 +9,8 @@ import os
 from datetime import date, timedelta
 from pathlib import Path
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
 def get_prev_workday_datestring():
     '''
@@ -102,6 +104,27 @@ def return_data_path():
     current_parent = current_path.parents[0]
     data_path = current_parent.joinpath('data')
     return data_path
+
+def return_indexes():
+    '''
+    Returns the components of the WIG20, MWIG40, SWIG80, as arrays
+    '''
+    URL_w20 = 'https://stooq.pl/q/i/?s=wig20'
+    URL_mwig40 = 'https://stooq.pl/q/i/?s=mwig40'
+    URL_swig80_1 = 'https://stooq.pl/q/i/?s=swig80'
+    URL_swig80_2 = 'https://stooq.pl/q/i/?s=swig80&l=2&i'
+
+    web_site_w20 = pd.read_html(URL_w20)
+    web_site_mwig40 = pd.read_html(URL_mwig40)
+    web_site_swig80_1 = pd.read_html(URL_swig80_1)
+    web_site_swig80_2 = pd.read_html(URL_swig80_2)
+
+    wig20 = web_site_w20[0][('WIG20', 'Nazwa')].iloc[4:24]
+    mwig40 = web_site_mwig40[0][('MWIG40', 'Nazwa')].iloc[4:44]
+    swig80_1 = web_site_swig80_1[0][('SWIG80', 'Nazwa')].iloc[4:54].copy()
+    swig80_2 = web_site_swig80_2[0][('SWIG80', 'Nazwa')].iloc[4:34].copy()
+    swig80 = np.concatenate((swig80_1.values, swig80_2.values), axis=None)
+    return wig20.values, mwig40.values, swig80
 
 if __name__ == '__main__':
     print('This is a module, please, import it.')
