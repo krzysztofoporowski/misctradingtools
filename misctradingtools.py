@@ -6,6 +6,7 @@ Set of miscalenious tools used for trading operations
 '''
 
 from datetime import date, timedelta
+from pathlib import Path
 import matplotlib.pyplot as plt
 
 def get_prev_workday_datestring():
@@ -33,11 +34,11 @@ def get_prev_workday_datestring():
 def get_date_from_past(past=7):
     '''
     Function returns date older than today minus past
-    
+
     Parameters:
     -----------
     past - intiger, number of days used to calculate past date
-    
+
     Returns:
     --------
     date in the Pandas DateTime format
@@ -82,6 +83,24 @@ def plot_ichimoku(data, stock_name, buy_data, sell_data):
     axis1.scatter(x=sell_data.index, y=sell_data.open, marker="v", c='red')
     plt.legend()
     plt.show()
+
+def return_data_path():
+    '''
+        Function to be used with programs working on the polish stock exchnge
+        data downloaded from the bossa.pl website.
+        There is an assumption, that the data is stored in the ~/python/data
+        folder.
+
+        Return:
+        -------
+            data_path - string contating path to the data folder with the
+                        python folder as a parent
+    '''
+    path = Path()
+    current_path = path.cwd()
+    current_parent = current_path.parents[0]
+    data_path = current_parent.joinpath('data')
+    return data_path
 
 if __name__ == '__main__':
     print('This is a module, please, import it.')
