@@ -5,6 +5,7 @@ krzysztof.oporowski@gmail.com
 Set of miscalenious tools used for trading operations
 '''
 
+import os
 from datetime import date, timedelta
 from pathlib import Path
 import matplotlib.pyplot as plt
