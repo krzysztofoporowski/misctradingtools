@@ -105,26 +105,36 @@ def return_data_path():
     data_path = current_parent.joinpath('data')
     return data_path
 
+def grab_stooq_table(URL):
+    '''
+        Function returns table from stooq
+    '''
+    from selenium import webdriver
+
+    driver = webdriver.PhantomJS()
+    driver = webdriver.Firefox(executable_path="/usr/bin/firefox")
+    URL  = 'https://stooq.pl/q/i/?s=wig20'
+    driver.get(URL)
+
 def return_indexes():
     '''
     Returns the components of the WIG20, MWIG40, SWIG80, as arrays
     '''
-    URL_w20 = 'https://stooq.pl/q/i/?s=wig20'
-    URL_mwig40 = 'https://stooq.pl/q/i/?s=mwig40'
-    URL_swig80_1 = 'https://stooq.pl/q/i/?s=swig80'
-    URL_swig80_2 = 'https://stooq.pl/q/i/?s=swig80&l=2&i'
+    import ssl
 
+    ssl._create_default_https_context = ssl._create_unverified_context
+    URL_w20 = 'https://strefainwestorow.pl/notowania/gpw/wig20-wig20/komponenty'
+    URL_mwig40 = 'https://strefainwestorow.pl/notowania/gpw/mwig40-mwig40/komponenty'
+    URL_swig80 = 'https://strefainwestorow.pl/notowania/gpw/swig80-swig80/komponenty'
+    
     web_site_w20 = pd.read_html(URL_w20)
     web_site_mwig40 = pd.read_html(URL_mwig40)
-    web_site_swig80_1 = pd.read_html(URL_swig80_1)
-    web_site_swig80_2 = pd.read_html(URL_swig80_2)
+    web_site_swig80 = pd.read_html(URL_swig80)
 
-    wig20 = web_site_w20[0][('WIG20', 'Nazwa')].iloc[4:24]
-    mwig40 = web_site_mwig40[0][('MWIG40', 'Nazwa')].iloc[4:44]
-    swig80_1 = web_site_swig80_1[0][('SWIG80', 'Nazwa')].iloc[4:54].copy()
-    swig80_2 = web_site_swig80_2[0][('SWIG80', 'Nazwa')].iloc[4:34].copy()
-    swig80 = np.concatenate((swig80_1.values, swig80_2.values), axis=None)
-    return wig20.values, mwig40.values, swig80
+    wig20 = web_site_w20[0]['Nazwa']
+    mwig40 = web_site_mwig40[0]['Nazwa']
+    swig80 = web_site_swig80[0]['Nazwa']
+    return wig20.values, mwig40.values, swig80.values
 
 if __name__ == '__main__':
     print('This is a module, please, import it.')
